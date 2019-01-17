@@ -1,14 +1,73 @@
 {
 	"name": "paperless-desktop",
-	"version": "0.0.14-beta",
+	"version": "0.0.15",
 	"description": "Desktop app that uses the paperless API to manage your documents",
-	"main": "main.js",
 	"scripts": {
-		"start": "gulp && electron .",
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "gulp && electron app app --js-flags='--expose-gc'",
+		"test": "mocha test",
+		"tdd": "mocha --watch test",
 		"lint": "eslint js/src",
 		"precommit": "pretty-quick --staged",
-		"package": "gulp && electron-packager ./ Paperless --platform=darwin --arch=all --out ./build --ignore='^/build$' --electron-version 1.8.4 --overwrite --icon=./icon.icns"
+		"package": "gulp && electron-packager ./ Paperless --platform=darwin --arch=all --out ./build --ignore='^/build$' --electron-version 1.8.4 --overwrite --icon=./icon.icns",
+		"dev": "NODE_ENV='development' electron app --js-flags='--expose-gc' --enable-logging --remote-debugging-port=9222",
+		"postinstall": "electron-builder install-app-deps",
+		"pack-all": "build --dir -mwl --x64 --ia32",
+		"dist-all": "build -mwl --x64 --ia32",
+		"pack": "build --dir",
+		"dist": "build --x64 --ia32"
+	},
+	"build": {
+		"productName": "Paperless",
+		"appId": "com.electron.paperless",
+		"artifactName": "${name}-${arch}.${ext}",
+		"copyright": "© 2019 Thomas Brüggemann",
+		"mac": {
+			"category": "public.app-category.developer-tools"
+		},
+		"dmg": {
+			"title": "Paperless",
+			"icon": "build/icon.icns",
+			"iconSize": 128,
+			"contents": [
+				{
+					"x": 355,
+					"y": 125,
+					"type": "link",
+					"path": "/Applications"
+				},
+				{
+					"x": 155,
+					"y": 125,
+					"type": "file"
+				}
+			]
+		},
+		"win": {
+			"icon": "build/icon.ico",
+			"target": [
+				"nsis",
+				"nsis-web",
+				"7z",
+				"zip"
+			]
+		},
+		"nsis": {
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true
+		},
+		"nsisWeb": {
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true
+		},
+		"linux": {
+			"icon": "build/icons/512x512.png",
+			"category": "Development",
+			"packageCategory": "Development",
+			"target": [
+				"AppImage",
+				"deb"
+			]
+		}
 	},
 	"repository": {
 		"type": "git",
@@ -39,14 +98,14 @@
 		"simple-react-pdf2": "^2.0.1",
 		"slug": "^0.9.1",
 		"underscore": "^1.8.3",
-		"webpack": "^2.4.1"
+		"webpack": "^2.4.1",
+		"i18next": "^10.3.0",
+		"i18next-node-fs-backend": "^1.0.0"
 	},
 	"devDependencies": {
 		"babelify": "^6.3.0",
 		"bower": "^1.6.3",
 		"browserify": "^11.2.0",
-		"electron": "^1.8.4",
-		"electron-packager": "^12.0.1",
 		"eslint": "^5.1.0",
 		"eslint-config-prettier": "^2.9.0",
 		"eslint-plugin-react": "^7.10.0",
@@ -55,7 +114,14 @@
 		"husky": "^0.14.3",
 		"prettier": "^1.13.7",
 		"pretty-quick": "^1.6.0",
-		"vinyl-source-stream": "^1.1.0"
+		"vinyl-source-stream": "^1.1.0",
+		"chai": "^4.1.2",
+		"chai-as-promised": "^7.1.1",
+		"electron": "^2.0.8",
+		"electron-builder": "^19.55.1",
+		"mocha": "^4.0.1",
+		"sinon": "^4.2.0",
+		"spectron": "^3.8.0"
 	},
 	"keywords": [
 		"paperless",
@@ -63,6 +129,9 @@
 		"electron"
 	],
 	"author": "Thomas Brüggemann",
+	"contributors": [
+		"Lawrence Meckan <media@absalom.biz>"
+	],
 	"license": "GPL-3.0",
 	"bugs": {
 		"url": "https://github.com/thomasbrueggemann/paperless-desktop/issues"

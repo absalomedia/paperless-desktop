@@ -31,7 +31,7 @@ gulp.task("browserify-vendor", function() {
 		.require(dependencies)
 		.bundle()
 		.pipe(source("vendor.bundle.js"))
-		.pipe(gulp.dest("js/build"));
+		.pipe(gulp.dest("app/js/build"));
 });
 
 /*
@@ -41,14 +41,14 @@ gulp.task("browserify-vendor", function() {
  */
 gulp.task("browserify", ["browserify-vendor"], function() {
 	return browserify({
-		entries: "js/src/main.js",
+		entries: "app/js/src/main.js",
 		debug: true
 	})
 		.external(dependencies)
 		.transform(babelify)
 		.bundle()
 		.pipe(source("bundle.js"))
-		.pipe(gulp.dest("js/build"));
+		.pipe(gulp.dest("app/js/build"));
 });
 
 gulp.task("default", ["browserify-vendor", "browserify"]);
