@@ -61,8 +61,8 @@
 		},
 		"linux": {
 			"icon": "build/icons/512x512.png",
-			"category": "Development",
-			"packageCategory": "Development",
+			"category": "Office",
+			"packageCategory": "Office",
 			"target": [
 				"AppImage",
 				"deb"

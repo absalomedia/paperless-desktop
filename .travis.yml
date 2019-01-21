@@ -1,27 +1,45 @@
 language: node_js
-node_js:
-- '9'
-matrix:
-  include:
-  - os: osx
 
-notifications:
-  email: false
+os:
+    - linux
+    - osx
+
+node_js: "9"
+
+before_install:
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update && sudo apt-get install -q libxss-dev; fi
+
+before_script:
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DISPLAY=:99.0 && sh -e /etc/init.d/xvfb start && sleep 3; fi
 
 script:
-  - npm run lint
-  - npm run package
+    - npm install -g istanbul
+    - istanbul cover ./node_modules/mocha/bin/_mocha
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then yarn dist; fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then yarn dist-all; fi
 
-before_deploy:
-  - cd build
-  - zip -r Paperless-${TRAVIS_TAG}.zip Paperless-darwin-x64
-  
+notifications:
+    email:
+        on_success: never
+        on_failure: change
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
+
 deploy:
-  provider: releases
-  api_key:
-    secure: kqaINuFILqWAorZDnjK6+XG3YgQ6kM4eOjbKJouSksBUV/JP0940wx0xeo9zwx6a15hIlrmqR2iYUqLyVLPRfIhYp5/zsoqEBupotpQg3sbhHT35TD3oo+viUNaMKhaT1YlAC9pntupHHxUYQvdpUU1GpYBpYzkoTJplkglLiOQfExOj3vHvB0Xbm9BnPXJhKdXoT7vSeCSHu7PNXJMj7pYHAxRi1iQuoofw99UwnMEtnWiJJesNt79yX5l2ZahwnNQHdtFQggNggBuT+sktNsRWXUTgmRkB6UFRVSvIPK7U9PWKgHCV4T+pOriM1maiFAbxzPb0OVlMj76NDrcfr4JGz9h/uBB2qYBuXDu81SSUcLgcB+7IDRw3rjirkOk23b6aKZ6W68VYINH4B7p6J3h2MrNLNhEBuXBF8ux5xNJQtYFNjJH4lb3f1kQGKMD6FFLMVYWbSXyAblvVD09266oG8hMX0394RezQuv2MK8sEtjBoUzVwAvXHprDlkW5RGisAAvSpxVl/EKht5KgC7nFXcGm0kgEQpvLekLm6Q6YTYbIncXlY4uD+zm+nfG1jnr4UWFoWVAfSoM7kQxqZPXQsJW7yJmh3ENsIWQ5bPz05S+z9M9ONISGCK4Z404fUpsWQ5SRQlgfDaNYh0wCNkRcuUqoY0AuGwWuZRdoXMPs=
-  file: Paperless-${TRAVIS_TAG}.zip
-  skip_cleanup: true
-  on:
-    repo: thomasbrueggemann/paperless-desktop
-    tags: true
+    provider: releases
+    api_key: "$GITHUB_API_KEY"
+    file:
+        - "dist/paperless-desktop.dmg"
+        - "dist/paperless-desktop.appx"
+        - "dist/paperless-desktop.exe"
+        - "dist/paperless-desktop-web-setup.exe"
+        - "dist/paperless-desktop-i386.AppImage"
+        - "dist/paperless-desktop-x86_64.AppImage"
+        - "dist/paperless-desktop-i686.rpm"
+        - "dist/paperless-desktop-x86_64.rpm"
+        - "dist/paperless-desktop-amd64.deb"
+        - "dist/paperless-desktop-i386.deb"
+    skip_cleanup: true
+    on:
+        tags: true
