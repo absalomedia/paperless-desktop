@@ -22,7 +22,7 @@
 		"artifactName": "${name}-${arch}.${ext}",
 		"copyright": "© 2019 Thomas Brüggemann",
 		"mac": {
-			"category": "public.app-category.developer-tools"
+			"category": "public.app-category.productivity"
 		},
 		"dmg": {
 			"title": "Paperless",
