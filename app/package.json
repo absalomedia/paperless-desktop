@@ -32,7 +32,9 @@
 		"simple-react-pdf2": "^2.0.1",
 		"slug": "^0.9.1",
 		"underscore": "^1.8.3",
-		"webpack": "^2.4.1"
+		"webpack": "^2.4.1",
+		"i18next": "^10.3.0",
+		"i18next-node-fs-backend": "^1.0.0"
 	},
 	"devDependencies": {
 		"babelify": "^6.3.0",
