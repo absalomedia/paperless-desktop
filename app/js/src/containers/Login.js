@@ -109,7 +109,7 @@ class Login extends React.Component {
 		return (
 			<div className="center-form">
 				<center>
-					<img src="icon.png" width="180" />
+					<img src="./icon.png" width="180" />
 				</center>
 				<form className="login-form">
 					<div className="form-group">
