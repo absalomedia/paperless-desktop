@@ -20,7 +20,7 @@
 		"axios": "^0.18.1",
 		"babel": "^5.8.23",
 		"btoa": "^1.1.2",
-		"electron-dl": "^1.6.0",
+		"electron-dl": "^3.0.0",
 		"history": "^1.12.5",
 		"jquery": "^3.4.0",
 		"moment": "^2.17.1",
