@@ -37,7 +37,7 @@
 		"react-waypoint": "^6.0.0",
 		"riek": "^1.0.7",
 		"simple-react-pdf2": "^2.0.1",
-		"slug": "^0.9.1",
+		"slug": "^0.9.2",
 		"underscore": "^1.8.3",
 		"webpack": "^2.4.1"
 	},
