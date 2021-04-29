@@ -1,0 +1,15 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "19:30"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: elliptic
+    versions:
+    - 6.5.3
+  - dependency-name: react-waypoint
+    versions:
+    - 9.0.3
